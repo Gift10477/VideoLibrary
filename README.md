@@ -2,18 +2,18 @@
 Video Library System (VLS) 🎬
 A distributed, client-server desktop application built to manage a video rental store. The system utilizes Java RMI (Remote Method Invocation) for network communication, JavaFX for a modern graphical user interface, and a persistent MySQL database.
 
-Author: Gift "Trip" Gicheru Githaka
+Author: Gift  Gicheru Githaka
 
 Institution: Strathmore University (Informatics and Computer Science)
 
-📌 Project Overview
+#📌 Project Overview
 The Video Library System is designed with a strict Client-Server architecture operating over a Virtual Private Network (ZeroTier). It features two distinct user interfaces:
 
 Admin Management Panel: For managing library inventory and user records.
 
 Customer Portal: For users to browse inventory, rent movies, and manage their return history.
 
-✨ Key Features
+#✨ Key Features
 Distributed Architecture: Clients connect remotely to a central Java RMI Server, allowing real-time data synchronization across different physical machines.
 
 Database Persistence: Full CRUD (Create, Read, Update, Delete) capabilities integrated with a centralized MySQL database.
@@ -26,7 +26,7 @@ Admin: Register/Remove Genres, Register/Remove Movies, Register Customers.
 
 Customer: Dynamic filtering of movies by genre, Renting capabilities, and Return History tracking.
 
-🛠️ Technology Stack
+#🛠️ Technology Stack
 Language: Java (JDK 21+)
 
 GUI Framework: JavaFX
@@ -37,7 +37,7 @@ Database: MySQL (via XAMPP)
 
 Database Connectivity: JDBC (MySQL Connector)
 
-🚀 Setup & Installation Guide
+#🚀 Setup & Installation Guide
 1. Prerequisites
 XAMPP installed and running (Apache & MySQL).
 
