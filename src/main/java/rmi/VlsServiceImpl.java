@@ -269,4 +269,22 @@ public class VlsServiceImpl extends UnicastRemoteObject implements VlsService {
         }
         return list;
     }
+    @Override
+    public List<Movie> getAllMovies() throws RemoteException {
+        List<Movie> list = new ArrayList<>();
+        // Join tables to get the movie title, ID, and its matching genre name
+        String sql = "SELECT m.id, m.Title, g.genre FROM Movies m JOIN Genres g ON m.genre_id = g.id WHERE m.isactive = 1";
+
+        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                list.add(new Movie(rs.getInt("id"), rs.getString("Title"), rs.getString("genre")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 }

@@ -11,6 +11,7 @@ public class RmiServer {
     public static void main(String[] args) {
         try {
             // Start RMI Registry on default port 1099
+            System.setProperty("java.rmi.server.hostname", "10.255.51.142");
             Registry registry = LocateRegistry.createRegistry(1099);
             VlsServiceImpl service = new VlsServiceImpl();
 

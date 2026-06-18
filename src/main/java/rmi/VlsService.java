@@ -112,4 +112,11 @@ public interface VlsService extends Remote {
      * @throws RemoteException if a network communication error occurs.
      */
     boolean removeMovie(int movieId) throws RemoteException;
+
+    /**
+     * Retrieves all active movies in the database regardless of genre.
+     * @return A List of all Movie objects.
+     * @throws RemoteException if the network fails.
+     */
+    List<Movie> getAllMovies() throws RemoteException;
 }

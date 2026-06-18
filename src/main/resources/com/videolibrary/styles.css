@@ -67,3 +67,149 @@
 .button:pressed {
     -fx-background-color: #2c2957;
 }
+/* --- WELCOME SCREEN STYLES --- */
+
+.welcome-root {
+    -fx-background-color: linear-gradient(to bottom right, #1c1c1c, #2a2a35);
+    -fx-padding: 40px;
+    -fx-alignment: center;
+}
+
+.title-text {
+    -fx-text-fill: #3b82f6;
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-font-family: 'Segoe UI', sans-serif;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 5, 0, 0, 2);
+}
+
+.subtitle-text {
+    -fx-text-fill: #a0aec0;
+    -fx-font-size: 14px;
+    -fx-font-family: 'Segoe UI', sans-serif;
+    -fx-padding: 0 0 10 0; /* Adds the margin below the subtitle */
+}
+
+.action-btn {
+    -fx-background-color: #2563eb;
+    -fx-text-fill: white;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 8, 0, 0, 3);
+    -fx-pref-width: 260px;
+    -fx-pref-height: 45px;
+}
+
+.action-btn:hover {
+    -fx-background-color: #60a5fa;
+    -fx-effect: dropshadow(three-pass-box, rgba(59,130,246,0.6), 15, 0, 0, 0);
+}
+/* ==========================================
+   MAIN INTERFACE STYLES (DARK THEME)
+   ========================================== */
+
+/* 1. The main application background */
+.root {
+    -fx-background-color: #1c1c1c;
+}
+
+/* 2. The grid holding your fields */
+.base-grid {
+    -fx-background-color: #1c1c1c;
+}
+
+/* 3. Global Text styling (Enhanced Visibility) */
+.text {
+    -fx-fill: #ffffff; /* Pure white for Text nodes */
+    -fx-font-size: 15px;
+    -fx-font-family: 'Segoe UI', sans-serif;
+    -fx-font-weight: bold;
+}
+
+.label {
+    -fx-text-fill: #ffffff; /* Pure white for Label nodes */
+    -fx-font-size: 15px;
+    -fx-font-family: 'Segoe UI', sans-serif;
+    -fx-font-weight: bold;
+}
+/* ==========================================
+   TAB PANE STYLING
+   ========================================== */
+/* The empty space behind the tabs at the top */
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-background-color: #2a2a35;
+}
+
+/* Unselected Tabs */
+.tab-pane .tab {
+    -fx-background-color: #2a2a35;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-padding: 8px 25px;
+    -fx-cursor: hand;
+}
+
+/* Hovering over a tab */
+.tab-pane .tab:hover {
+    -fx-background-color: #3b82f6;
+}
+
+/* The Currently Active Tab */
+.tab-pane .tab:selected {
+    -fx-background-color: #1c1c1c; /* Matches the base grid */
+    -fx-border-color: #3b82f6 transparent transparent transparent; /* Blue accent line on top */
+    -fx-border-width: 3px 0 0 0;
+}
+
+/* Tab Text */
+.tab-pane .tab .tab-label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+/* ==========================================
+   INPUT FIELDS & COMBO BOXES
+   ========================================== */
+.text-field, .combo-box {
+    -fx-background-color: #2a2a35;
+    -fx-text-fill: white;
+    -fx-border-color: #4b5563;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 4px;
+    -fx-pref-width: 250px; /* Makes all boxes a uniform professional width */
+}
+
+/* The text inside the dropdown */
+.combo-box .list-cell {
+    -fx-text-fill: white;
+    -fx-font-family: 'Segoe UI', sans-serif;
+}
+
+/* When a user clicks a box */
+.text-field:focused, .combo-box:focused {
+    -fx-border-color: #3b82f6; /* Blue glow */
+}
+
+/* The background of the entire dropdown popup */
+.combo-box-popup .list-view {
+    -fx-background-color: #2a2a35;
+    -fx-border-color: #4b5563;
+}
+
+/* The individual items (cells) inside the dropdown */
+.combo-box-popup .list-cell {
+    -fx-background-color: #2a2a35; /* Forces the dark background */
+    -fx-text-fill: #ffffff;        /* Forces the white text */
+    -fx-font-family: 'Segoe UI', sans-serif;
+}
+
+/* When hovering or selecting an item in the list */
+.combo-box-popup .list-cell:filled:hover,
+.combo-box-popup .list-cell:filled:selected {
+    -fx-background-color: #3b82f6; /* Blue highlight */
+    -fx-text-fill: #ffffff;
+}

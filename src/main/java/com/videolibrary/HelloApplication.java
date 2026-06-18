@@ -26,7 +26,7 @@ public class HelloApplication extends Application {
 
     private VlsService vlsService;
     private String clientType = "Customer"; // Default role fallback
-    private final String SERVER_IP = "localhost"; // Set to your server machine's real IP address during testing
+    private final String SERVER_IP = "10.255.51.142"; // Set to your server machine's real IP address during testing
 
     @Override
     public void start(Stage stage) {
@@ -39,23 +39,34 @@ public class HelloApplication extends Application {
             return;
         }
 
-        // 2. Role Selector Interface Window
-        VBox roleSelectionRoot = new VBox(15);
-        roleSelectionRoot.setPadding(new Insets(30));
-        roleSelectionRoot.setAlignment(Pos.CENTER);
-        roleSelectionRoot.setStyle("-fx-background-color: #f4f4f4;");
+        // 2. Role Selector Interface Window (Powered by CSS)
+        VBox roleSelectionRoot = new VBox(20);
+        roleSelectionRoot.getStyleClass().add("welcome-root");
 
-        Label label = new Label("Choose Your Application Interface Instance:");
-        label.setFont(Font.font("serif", FontWeight.BOLD, 16));
+        Label titleLabel = new Label("Video Library System");
+        titleLabel.getStyleClass().add("title-text");
 
-        Button adminBtn = new Button("Launch Client 1: Admin Interface");
-        Button customerBtn = new Button("Launch Client 2: Customer Interface");
+        Label subLabel = new Label("Welcome. Please choose your interface:");
+        subLabel.getStyleClass().add("subtitle-text");
 
-        adminBtn.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white; -fx-font-size: 12pt;");
-        customerBtn.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white; -fx-font-size: 12pt;");
+        Button adminBtn = new Button("Launch Admin Panel");
+        adminBtn.getStyleClass().add("action-btn");
 
-        roleSelectionRoot.getChildren().addAll(label, adminBtn, customerBtn);
-        Scene selectionScene = new Scene(roleSelectionRoot, 400, 200);
+        Button customerBtn = new Button("Launch Customer Portal");
+        customerBtn.getStyleClass().add("action-btn");
+
+        roleSelectionRoot.getChildren().addAll(titleLabel, subLabel, adminBtn, customerBtn);
+
+        Scene selectionScene = new Scene(roleSelectionRoot, 450, 300);
+
+        // Safely link the stylesheet to the Welcome Screen
+        try {
+            String cssPath = getClass().getResource("/com/videolibrary/styles.css").toExternalForm();
+            selectionScene.getStylesheets().add(cssPath);
+        } catch (NullPointerException e) {
+            System.out.println("Warning: styles.css stylesheet file not found in resource path.");
+        }
+
         stage.setTitle("VLS Initialization");
         stage.setScene(selectionScene);
         stage.show();
@@ -72,7 +83,6 @@ public class HelloApplication extends Application {
         });
     }
 
-    // Replace the renderMainInterface method inside HelloApplication.java with this:
     private void renderMainInterface(Stage stage) {
         TabPane tabPane = new TabPane();
 
@@ -82,13 +92,14 @@ public class HelloApplication extends Application {
             tabPane.getTabs().add(createCustomerTab());
             stage.setTitle("Video Library System - Admin Management Panel");
         } else {
-            tabPane.getTabs().add(createRentalsTab());
-            stage.setTitle("Video Library System - Customer Rental Window");
+            // Replaced the single Rentals tab with two separate tabs
+            tabPane.getTabs().add(createRentMovieTab());
+            tabPane.getTabs().add(createReturnMovieTab());
+            stage.setTitle("Video Library System - Customer Portal");
         }
 
         Scene mainScene = new Scene(tabPane, 650, 480);
 
-        // LINK THE CSS STYLESHEET HERE Safely
         try {
             String cssPath = getClass().getResource("/com/videolibrary/styles.css").toExternalForm();
             mainScene.getStylesheets().add(cssPath);
@@ -98,6 +109,7 @@ public class HelloApplication extends Application {
 
         stage.setScene(mainScene);
     }
+
     // ==========================================
     // INTERFACE 1: GENRES VIEW (Page 2-3)
     // ==========================================
@@ -105,15 +117,17 @@ public class HelloApplication extends Application {
         Tab tab = new Tab("1. Genres");
         GridPane grid = createBaseGrid();
 
-        Text text1 = new Text("Name:");
+        Label text1 = new Label("Name:");
         TextField textField1 = new TextField();
 
         Button button1 = new Button("Save");
+        button1.getStyleClass().add("action-btn");
 
-        Text text2 = new Text("Registered:");
+        Label text2 = new Label("Registered:");
         ComboBox<String> comboBox = new ComboBox<>();
 
         Button button2 = new Button("Remove");
+        button2.getStyleClass().add("action-btn");
 
         grid.add(text1, 0, 0); grid.add(textField1, 1, 0);
         grid.add(button1, 1, 1);
@@ -170,21 +184,21 @@ public class HelloApplication extends Application {
         Tab tab = new Tab("2. Movies");
         GridPane grid = createBaseGrid();
 
-        Text lblGenre = new Text("Genre:");
+        Label lblGenre = new Label("Genre:");
         ComboBox<String> comboGenre = new ComboBox<>();
 
-        Text lblName = new Text("Name:");
+        Label lblName = new Label("Name:");
         TextField txtMovieName = new TextField();
 
         Button btnSave = new Button("Save");
-        btnSave.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white; -fx-font-size:13pt;");
+        btnSave.getStyleClass().add("action-btn");
 
-        Text lblRegistered = new Text("Registered:");
+        Label lblRegistered = new Label("Registered:");
         lblRegistered.setStyle("-fx-font: normal bold 20px 'serif' ");
         ComboBox<Movie> comboRegisteredMovies = new ComboBox<>();
 
         Button btnRemove = new Button("Remove");
-        btnRemove.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white; -fx-font-size:13pt;");
+        btnRemove.getStyleClass().add("action-btn");
 
         grid.add(lblGenre, 0, 0); grid.add(comboGenre, 1, 0);
         grid.add(lblName, 0, 1); grid.add(txtMovieName, 1, 1);
@@ -245,22 +259,22 @@ public class HelloApplication extends Application {
         Tab tab = new Tab("3. Customers");
         GridPane grid = createBaseGrid();
 
-        Text lblName = new Text("Name:");
+        Label lblName = new Label("Name:");
         lblName.setStyle("-fx-font: normal bold 20px 'serif' ");
         TextField txtName = new TextField();
 
-        Text lblPhone = new Text("Phone:");
+        Label lblPhone = new Label("Phone:");
         lblPhone.setStyle("-fx-font: normal bold 20px 'serif' ");
         TextField txtPhone = new TextField();
 
-        Text lblEmail = new Text("Email:");
+        Label lblEmail = new Label("Email:");
         lblEmail.setStyle("-fx-font: normal bold 20px 'serif' ");
         TextField txtEmail = new TextField();
 
         Button btnSave = new Button("Save");
-        btnSave.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white; -fx-font-size:13pt;");
+        btnSave.getStyleClass().add("action-btn");
 
-        Text lblRegistered = new Text("Registered:");
+        Label lblRegistered = new Label("Registered:");
         lblRegistered.setStyle("-fx-font: normal bold 20px 'serif' ");
         ComboBox<String> comboRegistered = new ComboBox<>();
 
@@ -292,50 +306,102 @@ public class HelloApplication extends Application {
     }
 
     // ==========================================
-    // INTERFACE 4: RENTALS VIEW (Page 8)
+    // CUSTOMER TAB 1: RENT A MOVIE
     // ==========================================
-    private Tab createRentalsTab() {
-        Tab tab = new Tab("4. Rentals");
+    private Tab createRentMovieTab() {
+        Tab tab = new Tab("Rent Movie");
         GridPane grid = createBaseGrid();
 
-        Text lblCust = new Text("Customer:");
+        Label lblCust = new Label("Select Customer:");
         ComboBox<String> comboCust = new ComboBox<>();
 
-        Text lblGen = new Text("Genre:");
+        Label lblGen = new Label("Select Genre:");
         ComboBox<String> comboGen = new ComboBox<>();
 
-        Text lblMovies = new Text("Movies:");
+        Label lblMovies = new Label("Available Movies:");
         ComboBox<Movie> comboMovies = new ComboBox<>();
 
-        Button btnSaveRental = new Button("Save Rental");
-
-        Text lblBorrowed = new Text("Borrowed:");
-        ComboBox<Movie> comboBorrowed = new ComboBox<>();
-
-        Button btnReturn = new Button("Return Movie");
-
-        Text lblReturned = new Text("Returned:");
-        ComboBox<Movie> comboReturned = new ComboBox<>();
+        Button btnSaveRental = new Button("Rent Movie");
+        btnSaveRental.getStyleClass().add("action-btn");
 
         grid.add(lblCust, 0, 0); grid.add(comboCust, 1, 0);
         grid.add(lblGen, 0, 1); grid.add(comboGen, 1, 1);
         grid.add(lblMovies, 0, 2); grid.add(comboMovies, 1, 2);
         grid.add(btnSaveRental, 1, 3);
-        grid.add(lblBorrowed, 0, 4); grid.add(comboBorrowed, 1, 4);
-        grid.add(btnReturn, 1, 5);
-        grid.add(lblReturned, 0, 6); grid.add(comboReturned, 1, 6);
 
-        // Fetching dropdown values dynamically from the Server Registry
+        // Fetch dropdown values dynamically
         comboCust.setOnShowing(e -> {
             try { comboCust.getItems().setAll(vlsService.getCustomers()); } catch (Exception ex) { ex.printStackTrace(); }
         });
         comboGen.setOnShowing(e -> {
             try { comboGen.getItems().setAll(vlsService.getGenres()); } catch (Exception ex) { ex.printStackTrace(); }
         });
+
+        // Load movies only after a genre is clicked
         comboGen.setOnAction(e -> {
-            try { if(comboGen.getValue() != null) comboMovies.getItems().setAll(vlsService.getMoviesByGenre(comboGen.getValue())); } catch (Exception ex) { ex.printStackTrace(); }
+            try {
+                if(comboGen.getValue() != null) {
+                    comboMovies.getItems().setAll(vlsService.getMoviesByGenre(comboGen.getValue()));
+                }
+            } catch (Exception ex) { ex.printStackTrace(); }
         });
 
+        // Rent Action
+        btnSaveRental.setOnAction(e -> {
+            try {
+                String c = comboCust.getValue();
+                Movie m = comboMovies.getValue();
+                if (c != null && m != null) {
+                    vlsService.rentMovie(c, m.getId());
+
+                    // Clear the movie selection after a successful rental
+                    comboMovies.getSelectionModel().clearSelection();
+
+                    // Show a success popup to the user!
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Rental Successful");
+                    alert.setHeaderText(null);
+                    alert.setContentText(m.getTitle() + " has been successfully rented to " + c + ".");
+                    alert.showAndWait();
+                }
+            } catch (Exception ex) { ex.printStackTrace(); }
+        });
+
+        tab.setContent(grid);
+        tab.setClosable(false);
+        return tab;
+    }
+
+    // ==========================================
+    // CUSTOMER TAB 2: RETURN A MOVIE
+    // ==========================================
+    private Tab createReturnMovieTab() {
+        Tab tab = new Tab("Return Movie");
+        GridPane grid = createBaseGrid();
+
+        Label lblCust = new Label("Select Customer:");
+        ComboBox<String> comboCust = new ComboBox<>();
+
+        Label lblBorrowed = new Label("Currently Borrowed:");
+        ComboBox<Movie> comboBorrowed = new ComboBox<>();
+
+        Button btnReturn = new Button("Return Movie");
+        btnReturn.getStyleClass().add("action-btn");
+
+        Label lblReturned = new Label("Return History:");
+        ComboBox<Movie> comboReturned = new ComboBox<>();
+
+        grid.add(lblCust, 0, 0); grid.add(comboCust, 1, 0);
+        grid.add(lblBorrowed, 0, 1); grid.add(comboBorrowed, 1, 1);
+        grid.add(btnReturn, 1, 2);
+        grid.add(lblReturned, 0, 3); grid.add(comboReturned, 1, 3);
+
+        // Load Customers
+        comboCust.setOnShowing(e -> {
+            try { comboCust.getItems().setAll(vlsService.getCustomers()); } catch (Exception ex) { ex.printStackTrace(); }
+        });
+
+        // Auto-refresh lists when a customer is selected
         Runnable refreshRentalLists = () -> {
             try {
                 String c = comboCust.getValue();
@@ -348,45 +414,42 @@ public class HelloApplication extends Application {
 
         comboCust.setOnAction(e -> refreshRentalLists.run());
 
-        btnSaveRental.setOnAction(e -> {
-            try {
-                String c = comboCust.getValue();
-                Movie m = comboMovies.getValue();
-                if (c != null && m != null) {
-                    vlsService.rentMovie(c, m.getId());
-                    refreshRentalLists.run();
-                }
-            } catch (Exception ex) { ex.printStackTrace(); }
-        });
-
+        // Return Action
         btnReturn.setOnAction(e -> {
             try {
                 String c = comboCust.getValue();
                 Movie m = comboBorrowed.getValue();
                 if (c != null && m != null) {
                     vlsService.returnMovie(c, m.getId());
-                    refreshRentalLists.run();
+                    refreshRentalLists.run(); // instantly refresh the borrowed/returned lists
                 }
             } catch (Exception ex) { ex.printStackTrace(); }
+        });
+        // Force the lists to refresh instantly whenever this tab is clicked!
+        tab.setOnSelectionChanged(event -> {
+            if (tab.isSelected() && comboCust.getValue() != null) {
+                refreshRentalLists.run();
+            }
         });
 
         tab.setContent(grid);
         tab.setClosable(false);
         return tab;
     }
-
     // Helper method to keep UI base parameters centralized matching step-guidelines
     private GridPane createBaseGrid() {
         GridPane gridPane = new GridPane();
         gridPane.setMinSize(600, 400);
-        gridPane.setPadding(new Insets(15, 15, 15, 15));
-        gridPane.setVgap(12);
-        gridPane.setHgap(12);
+        gridPane.setPadding(new Insets(20));
+        gridPane.setVgap(15);
+        gridPane.setHgap(15);
         gridPane.setAlignment(Pos.CENTER);
-        gridPane.setStyle("-fx-background-color: BEIGE;");
+
+        // REMOVE THIS LINE: gridPane.setStyle("-fx-background-color: BEIGE;");
+        gridPane.getStyleClass().add("base-grid"); // ADD THIS LINE
+
         return gridPane;
     }
-
     private void showErrorWindow(String title, String message) {
         Stage errorStage = new Stage();
         VBox root = new VBox(10, new Label(message));
