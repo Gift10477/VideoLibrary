@@ -9,25 +9,40 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.util.List;
 
 /**
- * Client-side JavaFX application mapping interface components dynamically
+ * Client-side JavaFX application for the Video Library System.
+ * This class handles the graphical user interface and maps components dynamically
  * based on connections back to the central RMI Server registry.
  */
 public class HelloApplication extends Application {
 
+    /** The remote service interface used to communicate with the central database. */
     private VlsService vlsService;
-    private String clientType = "Customer"; // Default role fallback
-    private final String SERVER_IP = "10.255.51.142"; // Set to your server machine's real IP address during testing
 
+    /** The operational role chosen by the user (defaults to Customer). */
+    private String clientType = "Customer";
+
+    /** The IP address of the machine hosting the RMI Registry and database. */
+    private final String SERVER_IP = "10.255.51.142";
+
+    /**
+     * Default constructor for the HelloApplication class.
+     */
+    public HelloApplication() {
+        // Explicit default constructor to satisfy Javadoc requirements.
+    }
+
+    /**
+     * The main entry point for the JavaFX application.
+     * Establishes the RMI connection and renders the initial role selection screen.
+     *
+     * @param stage The primary window for this application.
+     */
     @Override
     public void start(Stage stage) {
         // 1. Establish connection to RMI Server
@@ -83,6 +98,12 @@ public class HelloApplication extends Application {
         });
     }
 
+    /**
+     * Transitions the application from the launch screen to the primary dashboard
+     * based on the user's selected role (Admin or Customer).
+     *
+     * @param stage The primary window for this application.
+     */
     private void renderMainInterface(Stage stage) {
         TabPane tabPane = new TabPane();
 
@@ -110,9 +131,11 @@ public class HelloApplication extends Application {
         stage.setScene(mainScene);
     }
 
-    // ==========================================
-    // INTERFACE 1: GENRES VIEW (Page 2-3)
-    // ==========================================
+    /**
+     * Builds the Genre Management tab for the Admin panel.
+     *
+     * @return A fully configured Tab containing the genre registration and removal interface.
+     */
     private Tab createGenreTab() {
         Tab tab = new Tab("1. Genres");
         GridPane grid = createBaseGrid();
@@ -177,9 +200,11 @@ public class HelloApplication extends Application {
         return tab;
     }
 
-    // ==========================================
-    // INTERFACE 2: MOVIES VIEW (Page 5-6)
-    // ==========================================
+    /**
+     * Builds the Movie Management tab for the Admin panel.
+     *
+     * @return A fully configured Tab containing the movie registration and removal interface.
+     */
     private Tab createMovieTab() {
         Tab tab = new Tab("2. Movies");
         GridPane grid = createBaseGrid();
@@ -252,9 +277,11 @@ public class HelloApplication extends Application {
         return tab;
     }
 
-    // ==========================================
-    // INTERFACE 3: CUSTOMERS REGISTRATION (Page 7)
-    // ==========================================
+    /**
+     * Builds the Customer Registration tab for the Admin panel.
+     *
+     * @return A fully configured Tab containing the customer sign-up interface.
+     */
     private Tab createCustomerTab() {
         Tab tab = new Tab("3. Customers");
         GridPane grid = createBaseGrid();
@@ -305,9 +332,11 @@ public class HelloApplication extends Application {
         return tab;
     }
 
-    // ==========================================
-    // CUSTOMER TAB 1: RENT A MOVIE
-    // ==========================================
+    /**
+     * Builds the Rental tab for the Customer portal.
+     *
+     * @return A fully configured Tab allowing customers to select and rent movies.
+     */
     private Tab createRentMovieTab() {
         Tab tab = new Tab("Rent Movie");
         GridPane grid = createBaseGrid();
@@ -372,9 +401,11 @@ public class HelloApplication extends Application {
         return tab;
     }
 
-    // ==========================================
-    // CUSTOMER TAB 2: RETURN A MOVIE
-    // ==========================================
+    /**
+     * Builds the Return tab for the Customer portal.
+     *
+     * @return A fully configured Tab allowing customers to return rented movies and view history.
+     */
     private Tab createReturnMovieTab() {
         Tab tab = new Tab("Return Movie");
         GridPane grid = createBaseGrid();
@@ -425,6 +456,7 @@ public class HelloApplication extends Application {
                 }
             } catch (Exception ex) { ex.printStackTrace(); }
         });
+
         // Force the lists to refresh instantly whenever this tab is clicked!
         tab.setOnSelectionChanged(event -> {
             if (tab.isSelected() && comboCust.getValue() != null) {
@@ -436,7 +468,12 @@ public class HelloApplication extends Application {
         tab.setClosable(false);
         return tab;
     }
-    // Helper method to keep UI base parameters centralized matching step-guidelines
+
+    /**
+     * Helper method to keep UI base parameters centralized matching step-guidelines.
+     *
+     * @return A configured GridPane to be used as the base layout for UI tabs.
+     */
     private GridPane createBaseGrid() {
         GridPane gridPane = new GridPane();
         gridPane.setMinSize(600, 400);
@@ -444,12 +481,17 @@ public class HelloApplication extends Application {
         gridPane.setVgap(15);
         gridPane.setHgap(15);
         gridPane.setAlignment(Pos.CENTER);
-
-        // REMOVE THIS LINE: gridPane.setStyle("-fx-background-color: BEIGE;");
-        gridPane.getStyleClass().add("base-grid"); // ADD THIS LINE
+        gridPane.getStyleClass().add("base-grid");
 
         return gridPane;
     }
+
+    /**
+     * Displays a standalone error window to the user.
+     *
+     * @param title   The title of the error window.
+     * @param message The specific error message to display.
+     */
     private void showErrorWindow(String title, String message) {
         Stage errorStage = new Stage();
         VBox root = new VBox(10, new Label(message));

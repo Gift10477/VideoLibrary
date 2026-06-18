@@ -191,9 +191,10 @@
 
 /* When a user clicks a box */
 .text-field:focused, .combo-box:focused {
-    -fx-border-color: #3b82f6; /* Blue glow */
+    -fx-background-color: #2a2a35; /* Forces the background to stay dark */
+    -fx-border-color: #3b82f6;     /* Keeps the blue glow */
+    -fx-text-fill: #ffffff;        /* Forces the text to stay pure white */
 }
-
 /* The background of the entire dropdown popup */
 .combo-box-popup .list-view {
     -fx-background-color: #2a2a35;
