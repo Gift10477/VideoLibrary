@@ -8,7 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Implementation of the VLS Remote Service using a live XAMPP MySQL Database.
+ * The server-side implementation of the VlsService remote interface.
+ * This class handles direct JDBC connections to the XAMPP MySQL database
+ * to process all client requests for the Video Library System.
+ * * @author Gift
+ * @version 1.0
  */
 public class VlsServiceImpl extends UnicastRemoteObject implements VlsService {
 
@@ -16,7 +20,10 @@ public class VlsServiceImpl extends UnicastRemoteObject implements VlsService {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/vls_db";
     private static final String DB_USER = "root";
     private static final String DB_PASSWORD = ""; // Default XAMPP password is empty
-
+    /**
+     * Constructs the implementation service and tests the database connection.
+     * * @throws RemoteException if the RMI export fails.
+     */
     public VlsServiceImpl() throws RemoteException {
         super();
         try {
@@ -30,6 +37,7 @@ public class VlsServiceImpl extends UnicastRemoteObject implements VlsService {
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     public synchronized boolean registerMovie(String title, String genre) throws RemoteException {
         String findGenreSql = "SELECT id FROM Genres WHERE genre = ? AND isactive = 1";
@@ -61,6 +69,7 @@ public class VlsServiceImpl extends UnicastRemoteObject implements VlsService {
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     public synchronized boolean registerCustomer(String name, String phone, String email) throws RemoteException {
         String sql = "INSERT INTO Clients (Fullname, isactive) VALUES (?, 1)";
@@ -76,6 +85,7 @@ public class VlsServiceImpl extends UnicastRemoteObject implements VlsService {
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     public List<String> getGenres() throws RemoteException {
         List<String> list = new ArrayList<>();
@@ -92,6 +102,7 @@ public class VlsServiceImpl extends UnicastRemoteObject implements VlsService {
         return list;
     }
 
+    /** {@inheritDoc} */
     @Override
     public List<Movie> getMoviesByGenre(String genre) throws RemoteException {
         List<Movie> list = new ArrayList<>();
@@ -111,6 +122,7 @@ public class VlsServiceImpl extends UnicastRemoteObject implements VlsService {
         return list;
     }
 
+    /** {@inheritDoc} */
     @Override
     public List<String> getCustomers() throws RemoteException {
         List<String> list = new ArrayList<>();
@@ -126,6 +138,8 @@ public class VlsServiceImpl extends UnicastRemoteObject implements VlsService {
         }
         return list;
     }
+
+    /** {@inheritDoc} */
     @Override
     public synchronized boolean removeGenre(String genreName) throws RemoteException {
         // Soft delete: set isactive to 0 so it's hidden from lists
@@ -142,6 +156,7 @@ public class VlsServiceImpl extends UnicastRemoteObject implements VlsService {
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     public synchronized boolean removeMovie(int movieId) throws RemoteException {
         // Soft delete: set isactive to 0 for the selected movie id
@@ -158,6 +173,7 @@ public class VlsServiceImpl extends UnicastRemoteObject implements VlsService {
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     public synchronized boolean rentMovie(String customerName, int movieId) throws RemoteException {
         String findClientSql = "SELECT id FROM Clients WHERE Fullname = ? AND isactive = 1";
@@ -185,6 +201,7 @@ public class VlsServiceImpl extends UnicastRemoteObject implements VlsService {
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     public synchronized boolean returnMovie(String customerName, int movieId) throws RemoteException {
         String sql = "UPDATE Rentals r JOIN Clients c ON r.client_id = c.id " +
@@ -200,6 +217,7 @@ public class VlsServiceImpl extends UnicastRemoteObject implements VlsService {
             return false;
         }
     }
+    /** {@inheritDoc} */
     @Override
     public synchronized boolean registerGenre(String genreName) throws RemoteException {
         String sql = "INSERT INTO Genres (genre, isactive) VALUES (?, 1)";
@@ -214,17 +232,22 @@ public class VlsServiceImpl extends UnicastRemoteObject implements VlsService {
             return false;
         }
     }
-
+    /** {@inheritDoc} */
     @Override
     public List<Movie> getBorrowedMovies(String customerName) throws RemoteException {
         return getMoviesByRentalStatus(customerName, 0);
     }
-
+    /** {@inheritDoc}*/
     @Override
     public List<Movie> getReturnedMovies(String customerName) throws RemoteException {
         return getMoviesByRentalStatus(customerName, 1);
     }
-
+    /**
+     * Helper method to fetch movies based on their returned status.
+     * * @param customerName The client's name.
+     * @param status       0 for borrowed, 1 for returned.
+     * @return A list of matching movies.
+     */
     private List<Movie> getMoviesByRentalStatus(String customerName, int status) {
         List<Movie> list = new ArrayList<>();
         String sql = "SELECT m.id, m.Title, g.genre FROM Rentals r " +
